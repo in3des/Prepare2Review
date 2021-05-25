@@ -19,10 +19,11 @@ public class Logic {
 
     private Map<String, String> mapFilling() {
         Map<String, String> result = new HashMap<>();
+        String temp = "";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             while (reader.ready()) {
-                String temp = reader.readLine();
+                temp = reader.readLine();
                 result.put(temp.split("\\|")[0], temp.split("\\|")[1]);
             }
         } catch (IOException e) {
@@ -30,6 +31,7 @@ public class Logic {
             System.exit(0);
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Файл имеет недопустимый формат");
+            System.out.println(temp);
             System.exit(0);
         }
 
@@ -55,8 +57,8 @@ public class Logic {
             System.out.println(question);
 
             while (!input.equals("+") && !input.equals("-") && !input.equals("exit")) {
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-                    input = reader.readLine();
+                try {
+                    input = new BufferedReader(new InputStreamReader(System.in)).readLine();
                 } catch (IOException e) {
                     //doNothing
                 }
@@ -72,7 +74,7 @@ public class Logic {
                     System.out.println(questions.get(question).replace("\\n", "\n"));
                     System.out.println("Enter для продолжения...");
                     try {
-                        new BufferedReader(new InputStreamReader(System.in)).readLine();
+                        String nothing = new BufferedReader(new InputStreamReader(System.in)).readLine();
                     } catch (IOException e) {
                         //doNothing
                     }
