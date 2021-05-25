@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Logic {
     private final String FILENAME;
@@ -15,38 +14,45 @@ public class Logic {
     }
 
     public void run() {
-        process(listFilling());
+        process(mapFilling());
     }
 
-    private List<String> listFilling() {
-        List<String> result = new ArrayList<>();
+    private Map<String, String> mapFilling() {
+        Map<String, String> result = new HashMap<>();
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(FILENAME));
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             while (reader.ready()) {
-                result.add(reader.readLine());
+                String temp = reader.readLine();
+                result.put(temp.split("\\|")[0], temp.split("\\|")[1]);
             }
         } catch (IOException e) {
             System.out.println("Файл с вопросами недоступен");
+            System.exit(0);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Файл имеет недопустимый формат");
             System.exit(0);
         }
 
         return result;
     }
 
-    private void process(List<String> questions) {
-        List<String> drlist = new ArrayList<>();
-        int random;
+    private void process(Map<String, String> questions) {
+        List<String> dontRight = new ArrayList<>();
         int count = 0;
         int right = 0;
-        int dRight = 0;
+        int random;
         String input;
 
-        while (questions.size() > 0) {
+        List<String> tempList = new ArrayList<>(questions.keySet());
+
+        while (tempList.size() > 0) {
             input = "";
-            random = (int) (Math.random() * (questions.size() - 1));
+            random = (int) (Math.random() * (tempList.size() - 1));
+
+            String question = tempList.get(random);
+
             System.out.print(count + 1 + ": ");
-            System.out.println(questions.get(random));
+            System.out.println(question);
 
             while (!input.equals("+") && !input.equals("-") && !input.equals("exit")) {
                 try {
@@ -62,27 +68,35 @@ public class Logic {
                     break;
                 }
                 case "-": {
-                    dRight++;
-                    drlist.add(questions.get(random));
+                    dontRight.add(question);
+                    System.out.println(questions.get(question).replace("\\n", "\n"));
+                    System.out.println("Enter для продолжения...");
+                    try {
+                        new BufferedReader(new InputStreamReader(System.in)).readLine();
+                    } catch (IOException e) {
+                        //doNothing
+                    }
                     break;
                 }
                 default: {
                     break;
                 }
             }
-            questions.remove(random);
+
+            tempList.remove(random);
 
             if (input.equals("exit")) break;
             count++;
         }
+
         System.out.println("Всего вопросов: " + count);
         System.out.println("Верных ответов: " + right);
-        System.out.println("Неверных ответов: " + dRight);
-        System.out.println("Шанс успешной сдачи: " + (100 - ((dRight * 100) / count)) + "%\n");
+        System.out.println("Неверных ответов: " + dontRight.size());
+        System.out.println("Вероятность успешного прохождения: " + (100 - ((dontRight.size() * 100) / count)) + "%\n");
 
         System.out.println("Отвечено неверно:");
-        for (String s : drlist) {
-            System.out.println(drlist.indexOf(s) + 1 + ": " + s);
+        for (String s : dontRight) {
+            System.out.println(s);
         }
     }
 }
