@@ -55,8 +55,8 @@ public class Logic {
             System.out.println(question);
 
             while (!input.equals("+") && !input.equals("-") && !input.equals("exit")) {
-                try {
-                    input = new BufferedReader(new InputStreamReader(System.in)).readLine();
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+                    input = reader.readLine();
                 } catch (IOException e) {
                     //doNothing
                 }
