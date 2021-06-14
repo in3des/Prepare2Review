@@ -30,7 +30,7 @@ public class Logic {
             System.out.println("Файл с вопросами недоступен");
             System.exit(0);
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Файл имеет недопустимый формат");
+            System.out.println("Файл имеет недопустимый формат. Строка с ошибкой:");
             System.out.println(temp);
             System.exit(0);
         }
@@ -74,7 +74,7 @@ public class Logic {
                     System.out.println(questions.get(question).replace("\\n", "\n"));
                     System.out.println("Enter для продолжения...");
                     try {
-                        String nothing = new BufferedReader(new InputStreamReader(System.in)).readLine();
+                        new BufferedReader(new InputStreamReader(System.in)).readLine();
                     } catch (IOException e) {
                         //doNothing
                     }
