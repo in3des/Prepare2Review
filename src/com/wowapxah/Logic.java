@@ -67,6 +67,14 @@ public class Logic {
             switch (input) {
                 case "+": {
                     right++;
+//                    System.out.println("самопроверка...-");
+//                    System.out.println(questions.get(question).replace("\\n", "\n"));
+//                    System.out.println("Enter для продолжения...");
+//                    try {
+//                        new BufferedReader(new InputStreamReader(System.in)).readLine();
+//                    } catch (IOException e) {
+//                        //doNothing
+//                    }
                     break;
                 }
                 case "-": {
