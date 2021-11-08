@@ -1,8 +1,5 @@
 package com.wowapxah;
 
-import java.io.File;
-import java.util.Collections;
-
 public class Main {
     /***
     ** путь к файлу с вопросами - изменить на свое
@@ -27,7 +24,5 @@ public class Main {
         logic.run();
 
     }
-
-
 
 }
